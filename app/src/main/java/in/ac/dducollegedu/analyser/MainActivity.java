@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -131,9 +132,22 @@ public class MainActivity extends AppCompatActivity {
                     if (timeQuantum == 0 && algo == "rr") {
                         analysis = "In case of time quantum 0, Infinite preemption will occur and ready queue will never be empty";
                     } else {
-                        analysis = analyser.calculateFor(algo, toTest, timeQuantum);
+                        try {
+                            analysis = analyser.calculateFor(algo, toTest, timeQuantum);
+                        } catch (Exception e) {
+                            Toast.makeText(MainActivity.this, "Error in Calculation occured !", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     toSet.setText(analysis);
+                }
+                /**
+                 * Hiding Keyboard so that user can see the scroll view of analysis output
+                 */
+                InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                try {
+                    inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+                } catch (Exception e) {
+                    Toast.makeText(MainActivity.this, "Error in Keyboard occured !", Toast.LENGTH_SHORT).show();
                 }
             }
         });
