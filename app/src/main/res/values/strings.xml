@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">CPU Scheduling Analyser</string>
+    <string name="columns">"Processes    Arrival Time      CPU Burst       Priority"</string>
+    <string name="example_input">"P1                              0                                 8                          0"</string>
+    <string name="no_processes">No Processes</string>
+    <string name="q_for_rr">Q? for RR</string>
+    <string name="add">ADD</string>
+    <string name="analyse_scheduling_algorithms">Analyse Scheduling Algorithms</string>
+    <string name="preemptive_sjf_analysis">PREEMPTIVE SJF ANALYSIS</string>
+    <string name="non_preemptive_sjf_analysis">NON-PREEMPTIVE SJF ANALYSIS</string>
+    <string name="preemptive_priority_analysis">PREEMPTIVE PRIORITY ANALYSIS</string>
+    <string name="fcfs_analysis">FCFS ANALYSIS</string>
+    <string name="non_preemptive_priority_analysis">NON-PREEMPTIVE PRIORITY ANALYSIS</string>
+    <string name="burst_time">Burst Time</string>
+    <string name="round_robin_analysis">ROUND ROBIN ANALYSIS</string>
+    <string name="arrival_time">Arrival Time</string>
+    <string name="priority">Priority</string>
+    <string name="made_by_abhinandan_arya">Made by Abhinandan Arya</string>
+</resources>

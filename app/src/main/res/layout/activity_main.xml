@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/columns"
+        style="@style/analysis_head"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/columns"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ScrollView
+        android:id="@+id/inputs_scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toTopOf="@+id/priority_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/columns">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/inputs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/no_processes"
+                app:layout_constraintBottom_toTopOf="@+id/priority_input"
+                tools:text="@string/example_input" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <EditText
+        android:id="@+id/arrival_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/arrival_time"
+        android:inputType="number"
+        android:paddingTop="20dp"
+        android:selectAllOnFocus="true"
+        app:layout_constraintBaseline_toBaselineOf="@+id/burst_input"
+        app:layout_constraintEnd_toStartOf="@+id/burst_input"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/burst_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/burst_time"
+        android:inputType="number"
+        android:selectAllOnFocus="true"
+        app:layout_constraintBottom_toTopOf="@+id/time_quantum"
+        app:layout_constraintEnd_toStartOf="@+id/priority_input"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/arrival_input"
+        app:layout_constraintTop_toBottomOf="@+id/inputs_scroll_view"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <EditText
+        android:id="@+id/priority_input"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/priority"
+        android:inputType="number"
+        android:selectAllOnFocus="true"
+        app:layout_constraintBaseline_toBaselineOf="@+id/burst_input"
+        app:layout_constraintEnd_toStartOf="@+id/add_inputs"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/burst_input" />
+
+    <Button
+        android:id="@+id/add_inputs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/add"
+        app:layout_constraintBaseline_toBaselineOf="@+id/burst_input"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/priority_input" />
+
+    <EditText
+        android:id="@+id/time_quantum"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/q_for_rr"
+        android:inputType="number"
+        android:selectAllOnFocus="true"
+        app:layout_constraintBaseline_toBaselineOf="@+id/calculate_button"
+        app:layout_constraintEnd_toStartOf="@+id/calculate_button"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/calculate_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/analyse_scheduling_algorithms"
+        app:layout_constraintBottom_toTopOf="@+id/output_scroll"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/arrival_input" />
+
+    <ScrollView
+        android:id="@+id/output_scroll"
+        android:layout_width="0dp"
+        android:layout_height="380dp"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/calculate_button">
+
+        <LinearLayout
+            android:id="@+id/output_viewgroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fcfs_output"
+                style="@style/analysis_head"
+                android:text="@string/fcfs_analysis"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/fcfsa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_processes"
+                android:textIsSelectable="true"
+                tools:text="FCFS Outputs" />
+
+            <TextView
+                android:id="@+id/npsjf_output"
+                style="@style/analysis_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/non_preemptive_sjf_analysis" />
+
+            <TextView
+                android:id="@+id/npsjfa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_processes"
+                android:textIsSelectable="true"
+                tools:text="Non-Preemptive SJF Outputs" />
+
+            <TextView
+                android:id="@+id/psjf_output"
+                style="@style/analysis_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/preemptive_sjf_analysis" />
+
+            <TextView
+                android:id="@+id/psjfa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_processes"
+                android:textIsSelectable="true"
+                tools:text="Preemptive SJF Outputs" />
+
+            <TextView
+                android:id="@+id/npp_output"
+                style="@style/analysis_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/non_preemptive_priority_analysis" />
+
+            <TextView
+                android:id="@+id/nppa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_processes"
+                android:textIsSelectable="true"
+                tools:text="Non-Preemptive Priority Outputs" />
+
+            <TextView
+                android:id="@+id/pp_output"
+                style="@style/analysis_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/preemptive_priority_analysis" />
+
+            <TextView
+                android:id="@+id/ppa"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_processes"
+                android:textIsSelectable="true"
+                tools:text="Preemptive Priority Outputs" />
+
+            <TextView
+                android:id="@+id/rr_output"
+                style="@style/analysis_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/round_robin_analysis" />
+
+            <TextView
+                android:id="@+id/rra"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/no_processes"
+                android:textIsSelectable="true"
+                tools:text="Round Robin Outputs" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/ownership"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="@string/made_by_abhinandan_arya"
+        android:textColor="@android:color/holo_green_dark"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/output_scroll" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
