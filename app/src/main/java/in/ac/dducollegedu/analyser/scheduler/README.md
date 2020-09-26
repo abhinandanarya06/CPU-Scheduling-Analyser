@@ -11,6 +11,7 @@
 
     - **PreemptivePriority** *(extends Scheduler)* : Preemptive Priority - It rearrange and slice processes in queue according to priority and preemption on arrival of higher priority process.
         - **PreemptiveSJF** *(extends PreemptivePriority)* - It rearrange and slice processes in queue just like PreemptivePriority + early set priority of each process to corresponding CPU Burst.
+    - **RR** *(extends Scheduler)* : Round Robin Scheduling - It rearrange and slice processes in queue according to given time quantum and FCFS policy.
 
 * **SchedulerAnalyser** *(has all objects of above classes)* : Creates all objects of above classes and perform analysis(collects analysis parameters)
 
