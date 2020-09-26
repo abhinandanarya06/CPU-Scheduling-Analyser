@@ -1,6 +1,7 @@
 package in.ac.dducollegedu.analyser.scheduler;
 
 import java.util.Scanner;
+import java.util.Arrays;
 
 public class RR extends Scheduler {
     int timeQuantum; // Maximum Preemption Interval
@@ -8,40 +9,55 @@ public class RR extends Scheduler {
     public RR(int timeQuantum, Process[] init) {
         this.processes = copy(init);
         this.timeQuantum = timeQuantum;
+
         /*
          * Finding required length/size of queue in
          * Round Robin Algorithm and store it in processQueueLenght.
          */
         int queueLenght = 0;
         for (Process p: processes) {
+            p.priority = p.arrivalTime;
             queueLenght += Math.ceil((double) p.cpuBurst / timeQuantum);
         }
-
+        Arrays.sort(processes);
         /*
          * Initialise queue with necessary lenght/size
          * And reordering and slicing the process
          * according to time quantum and arrival time.
          */
         queue = new Process[queueLenght];
-        int curSeat, pNo, curArrival;
-        curSeat = pNo = curArrival = 0;
+        int curSeat, pNo, curArrival, lastAssigned;
+        curSeat = pNo = curArrival = lastAssigned = 0;
         while (curSeat < queueLenght) {
-            int lenght = 0;
+            int queueCover = 0;
+            int nextArrival = 0;
             for (Process p: processes) {
-                if (curArrival >= p.arrivalTime) lenght++;
+                if (curArrival >= p.arrivalTime) queueCover++;
+                else {
+                    nextArrival = p.arrivalTime;
+                    break;
+                }
             }
-            if (lenght == 0) lenght = 1;
-            int toAssign = pNo % lenght;
-            if (processes[toAssign].cpuBurst > 0) {
-                int timeReq = Math.min(processes[toAssign].cpuBurst, timeQuantum);
-                processes[toAssign].cpuBurst -= timeReq;
-                queue[curSeat] = new Process();
-                queue[curSeat].pid = processes[toAssign].pid;
-                curArrival = Math.max(curArrival, processes[toAssign].arrivalTime);
-                queue[curSeat].set(curArrival, curArrival, timeReq);
-                curArrival += timeReq;
-                curSeat++;
+            if (queueCover == 0) {
+                curArrival = nextArrival;
+                continue;
             }
+            while (processes[pNo%queueCover].cpuBurst == 0) {
+                pNo++;
+                queueCover = Math.min(queueCover+1, processes.length);
+            }
+            int toAssign = pNo % queueCover;
+            if (lastAssigned == toAssign) toAssign = (lastAssigned+1) % queueCover;
+            while (processes[toAssign].cpuBurst == 0) toAssign++;
+            int timeReq = Math.min(timeQuantum, processes[toAssign].cpuBurst);
+            queue[curSeat] = new Process();
+            queue[curSeat].pid = processes[toAssign].pid;
+            curArrival = Math.max(curArrival, processes[toAssign].arrivalTime);
+            queue[curSeat].set(curArrival, curArrival, timeReq);
+            processes[toAssign].cpuBurst -= timeReq;
+            lastAssigned = toAssign;
+            curArrival += timeReq;
+            curSeat++;
             pNo++;
         }
         this.processes = copy(init);

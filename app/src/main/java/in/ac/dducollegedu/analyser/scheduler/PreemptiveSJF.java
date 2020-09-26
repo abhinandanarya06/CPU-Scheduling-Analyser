@@ -52,6 +52,7 @@ public class PreemptiveSJF extends PreemptivePriority {
         Arrays.sort(processes);
         for (Process p: processes) {
             if (p.cpuBurst > 0) {
+                lastArrival = Math.max(lastArrival, p.arrivalTime);
                 Process toAdd = new Process();
                 toAdd.pid = p.pid;
                 toAdd.set(lastArrival, p.priority, p.cpuBurst);

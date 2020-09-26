@@ -5,20 +5,27 @@ import java.util.Scanner;
 public class SchedulerAnalyser {
     public String calculateFor(String algo, Process[] testProcesses, int timeQuantum) {
         Scheduler scheduler;
-        if (algo == "fcfs") {
-            scheduler = new FCFS (testProcesses);
-        } else if (algo == "npsjf") {
-            scheduler = new NonPreemptiveSJF (testProcesses);
-        } else if (algo == "psjf") {
-            scheduler = new PreemptiveSJF(testProcesses);
-        } else if (algo == "pp") {
-            scheduler = new PreemptivePriority(testProcesses);
-        } else if (algo == "npp") {
-            scheduler = new NonPreemptivePriority(testProcesses);
-        } else if (algo == "rr") {
-            scheduler = new RR(timeQuantum, testProcesses);
-        } else {
-            return "";
+        switch (algo) {
+            case "fcfs":
+                scheduler = new FCFS(testProcesses);
+                break;
+            case "npsjf":
+                scheduler = new NonPreemptiveSJF(testProcesses);
+                break;
+            case "psjf":
+                scheduler = new PreemptiveSJF(testProcesses);
+                break;
+            case "pp":
+                scheduler = new PreemptivePriority(testProcesses);
+                break;
+            case "npp":
+                scheduler = new NonPreemptivePriority(testProcesses);
+                break;
+            case "rr":
+                scheduler = new RR(timeQuantum, testProcesses);
+                break;
+            default:
+                return "";
         }
         String output = "";
         output += scheduler.retGanttChart();
@@ -48,7 +55,7 @@ public class SchedulerAnalyser {
         int timeQuantum = in.nextInt();
         System.out.print("How many processes are there ? : ");
         int numOfProcesses = in.nextInt();
-        Process givenProcesses[] = new Process[numOfProcesses];
+        Process[] givenProcesses = new Process[numOfProcesses];
         for (int i=0; i < numOfProcesses; i++) {
             int arrivalTime, cpuBurst, priority;
             System.out.printf("Enter details of P%d : (arrivalTime, cpuBurst, priority) = ", i+1);
