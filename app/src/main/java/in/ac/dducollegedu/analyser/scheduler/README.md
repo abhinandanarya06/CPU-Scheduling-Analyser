@@ -13,3 +13,12 @@
         - **PreemptiveSJF** *(extends PreemptivePriority)* - It rearrange and slice processes in queue just like PreemptivePriority + early set priority of each process to corresponding CPU Burst.
 
 * **SchedulerAnalyser** *(has all objects of above classes)* : Creates all objects of above classes and perform analysis(collects analysis parameters)
+
+
+## Java Classes Testing 
+1. To perform test for the java classes, please remove **package** statement in each java file so that it perform without any error.
+2. Compile and run any scheduling class you want as follows
+```
+    javac <JAVA_FILE>.java
+    java <JAVA_CLASS>
+```
