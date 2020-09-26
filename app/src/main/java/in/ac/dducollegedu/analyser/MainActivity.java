@@ -25,14 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        /**
+        /*
          * Initialise MainActivity with Data Binding to access
          * activity views efficiently
          */
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
 
-        /**
+        /*
          * Initialising process calculation parameter : testProcesses, processNo, analyser
          *         and  output format string parameter : table
          */
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         binding.addInputs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
+                /*
                  * Getting Input EditText Views with explicite smaller
                  * namespace
                  */
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
                 arrivalB = binding.arrivalInput;
                 burstB = binding.burstInput;
                 priorityB = binding.priorityInput;
-                /**
+                /*
                  * Getting arrival time, burst time, priority of process
                  * from EditText View above initialised
                  *
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch(Exception e) {
                     Toast.makeText(MainActivity.this, "Assuming blank entries to be 0", Toast.LENGTH_SHORT).show();
                 }
-                /**
+                /*
                  * Creating new Process and setting above given inputs to
                  * the parameter of the new process
                  *
@@ -81,13 +81,13 @@ public class MainActivity extends AppCompatActivity {
                 toAdd.pid = processNo;
                 toAdd.set(arrivalTime, priority, burstTime);
                 testProcesses.add(toAdd);
-                /**
+                /*
                  * Adding formatted output string to table
                  */
                 table += String.format("P%d \t\t\t\t\t\t\t\t %d \t\t\t\t\t\t\t\t\t\t %d \t\t\t\t\t\t\t\t %d\n",
                         processNo, arrivalTime, burstTime, priority);
                 processNo++;
-                /**
+                /*
                  * Setting output table to appropriate TextView inputs
                  */
                 binding.inputs.setText(table);
@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
         binding.calculateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**
+                /*
                  * Getting time quantum input from EditText View timeQuantum
                  *
                  * if given time quantum is invalid (<= 0), show a toast assuming
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     Toast.makeText(MainActivity.this, "Assuming time quantum to be 1", Toast.LENGTH_SHORT).show();
                 }
-                /**
+                /*
                  * Iterating over all algorithms analysis and calculate analysis paramter
                  * for each algorithms then set the output analysis to appropriate TextView
                  *
@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     toSet.setText(analysis);
                 }
-                /**
+                /*
                  * Hiding Keyboard so that user can see the scroll view of analysis output
                  */
                 InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);

@@ -33,19 +33,19 @@ public class SchedulerAnalyser {
         for (Process p: scheduler.processes) {
             output += String.format("(P%d = %d), ", p.pid, scheduler.turnaroundTimeOf(p.pid));
         }
-        output += "\nAvg. Turnaround Time : " + scheduler.avgTurnaroundTime();
+        output += String.format("\nAvg. Turnaround Time : %.2f", scheduler.avgTurnaroundTime());
 
         output += "\n\nWait Time : ";
         for (Process p: scheduler.processes) {
             output += String.format("(P%d = %d), ", p.pid, scheduler.waitTimeOf(p.pid));
         }
-        output += "\nAvg. Waiting Time : " + scheduler.avgWaitTime();
+        output += String.format("\nAvg. Waiting Time : %.2f", scheduler.avgWaitTime());
 
         output += "\n\nResponse Time : ";
         for (Process p: scheduler.processes) {
             output += String.format("(P%d = %d), ", p.pid, scheduler.responseTimeOf(p.pid));
         }
-        output += "\nAvg. Response Time : " + scheduler.avgResponseTime();
+        output += String.format("\nAvg. Response Time : %.2f", scheduler.avgResponseTime());
         output += "\n";
         return output;
     }
