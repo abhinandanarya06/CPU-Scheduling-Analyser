@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
                     burstTime = Integer.parseInt(burstB.getText().toString());
                     priority = Integer.parseInt(priorityB.getText().toString());
                 } catch(Exception e) {
-                    Toast.makeText(MainActivity.this, "Assuming blank entries to be 0", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Please fill blank entries !", Toast.LENGTH_SHORT).show();
                 }
                 /*
                  * Creating new Process and setting above given inputs to

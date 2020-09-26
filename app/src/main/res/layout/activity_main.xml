@@ -124,9 +124,10 @@
     <ScrollView
         android:id="@+id/output_scroll"
         android:layout_width="0dp"
-        android:layout_height="380dp"
+        android:layout_height="400dp"
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calculate_button">
@@ -228,17 +229,5 @@
         </LinearLayout>
     </ScrollView>
 
-    <TextView
-        android:id="@+id/ownership"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:text="@string/made_by_abhinandan_arya"
-        android:textColor="@android:color/holo_green_dark"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/output_scroll" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
