@@ -57,7 +57,8 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/burst_input"
         app:layout_constraintEnd_toStartOf="@+id/burst_input"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/burst_input"
@@ -73,7 +74,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/arrival_input"
         app:layout_constraintTop_toBottomOf="@+id/inputs_scroll_view"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:importantForAutofill="no" />
 
     <EditText
         android:id="@+id/priority_input"
@@ -87,7 +89,8 @@
         app:layout_constraintBaseline_toBaselineOf="@+id/burst_input"
         app:layout_constraintEnd_toStartOf="@+id/add_inputs"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/burst_input" />
+        app:layout_constraintStart_toEndOf="@+id/burst_input"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/add_inputs"
@@ -112,7 +115,8 @@
         android:selectAllOnFocus="true"
         app:layout_constraintBaseline_toBaselineOf="@+id/calculate_button"
         app:layout_constraintEnd_toStartOf="@+id/calculate_button"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:importantForAutofill="no" />
 
     <Button
         android:id="@+id/calculate_button"
