@@ -4,7 +4,7 @@
     <string name="example_input">"P1                              0                                 8                          0"</string>
     <string name="no_processes">No Processes</string>
     <string name="q_for_rr">Q? for RR</string>
-    <string name="add">ADD</string>
+    <string name="add">+</string>
     <string name="analyse_scheduling_algorithms">Analyse Scheduling Algorithms</string>
     <string name="preemptive_sjf_analysis">PREEMPTIVE SJF ANALYSIS</string>
     <string name="non_preemptive_sjf_analysis">NON-PREEMPTIVE SJF ANALYSIS</string>
