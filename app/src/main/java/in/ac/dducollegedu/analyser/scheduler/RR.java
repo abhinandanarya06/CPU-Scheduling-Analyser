@@ -48,7 +48,15 @@ public class RR extends Scheduler {
             }
             int toAssign = pNo % queueCover;
             if (lastAssigned == toAssign) toAssign = (lastAssigned+1) % queueCover;
-            while (processes[toAssign].cpuBurst == 0) toAssign++;
+            while (toAssign < processes.length && processes[toAssign].cpuBurst == 0) toAssign++;
+            if (toAssign==processes.length) {
+                for (int i=0; i<processes.length; i++) {
+                    if (processes[i].cpuBurst > 0) {
+                        pNo = toAssign = i;
+                        break;
+                    }
+                }
+            }
             int timeReq = Math.min(timeQuantum, processes[toAssign].cpuBurst);
             queue[curSeat] = new Process();
             queue[curSeat].pid = processes[toAssign].pid;
