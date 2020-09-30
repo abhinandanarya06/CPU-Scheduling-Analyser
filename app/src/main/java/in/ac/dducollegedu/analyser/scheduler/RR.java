@@ -1,7 +1,10 @@
 package in.ac.dducollegedu.analyser.scheduler;
 
-import java.util.Scanner;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 
 public class RR extends Scheduler {
     int timeQuantum; // Maximum Preemption Interval
@@ -14,10 +17,10 @@ public class RR extends Scheduler {
          * Finding required length/size of queue in
          * Round Robin Algorithm and store it in processQueueLenght.
          */
-        int queueLenght = 0;
-        for (Process p: processes) {
+        int totalBurst = 0;
+        for (Process p : processes) {
             p.priority = p.arrivalTime;
-            queueLenght += Math.ceil((double) p.cpuBurst / timeQuantum);
+            totalBurst += p.cpuBurst;
         }
         Arrays.sort(processes);
         /*
@@ -25,50 +28,68 @@ public class RR extends Scheduler {
          * And reordering and slicing the process
          * according to time quantum and arrival time.
          */
-        queue = new Process[queueLenght];
-        int curSeat, pNo, curArrival, lastAssigned;
-        curSeat = pNo = curArrival = lastAssigned = 0;
-        while (curSeat < queueLenght) {
-            int queueCover = 0;
-            int nextArrival = 0;
-            for (Process p: processes) {
-                if (curArrival >= p.arrivalTime) queueCover++;
-                else {
-                    nextArrival = p.arrivalTime;
+
+        // for adding processes in queue dynamically
+        ArrayList<Process> queue = new ArrayList<>();
+
+        // stores total time passed
+        int curBurst = 0;
+
+        // stores arrival time of current process to be added to the queue
+        int curArrival = processes[0].arrivalTime;
+
+        // for handling if process are previously added or not
+        Set<Integer> added = new HashSet<>();
+
+        while (curBurst < totalBurst) {
+            Process toadd = null;
+            /*
+             * Selecting process which has arrived within curArrival
+             * and whose remaining time of execution greater than zero
+             * and has not added to the queue previously
+             */
+            for (Process p : processes) {
+                if (!added.contains(p.pid) && curArrival >= p.arrivalTime && p.cpuBurst > 0) {
+                    toadd = p;
                     break;
                 }
             }
-            if (queueCover == 0) {
-                curArrival = nextArrival;
-                continue;
-            }
-            while (processes[pNo%queueCover].cpuBurst == 0) {
-                pNo++;
-                queueCover = Math.min(queueCover+1, processes.length);
-            }
-            int toAssign = pNo % queueCover;
-            if (lastAssigned == toAssign) toAssign = (lastAssigned+1) % queueCover;
-            while (toAssign < processes.length && processes[toAssign].cpuBurst == 0) toAssign++;
-            if (toAssign==processes.length) {
-                for (int i=0; i<processes.length; i++) {
-                    if (processes[i].cpuBurst > 0) {
-                        pNo = toAssign = i;
+            /*
+             * Selection could not be done can have 2 reasons:
+             * 1] there is not process within curArrival
+             * 2] all process has been added to the queue hence need clear it and
+             *      again recycle the process
+             */
+            if (toadd == null) {
+                for (Process p : processes) {
+                    if (p.cpuBurst > 0) {
+                        curArrival = Math.max(p.arrivalTime, curArrival);
                         break;
                     }
                 }
+                added.clear();
+                continue;
             }
-            int timeReq = Math.min(timeQuantum, processes[toAssign].cpuBurst);
-            queue[curSeat] = new Process();
-            queue[curSeat].pid = processes[toAssign].pid;
-            curArrival = Math.max(curArrival, processes[toAssign].arrivalTime);
-            queue[curSeat].set(curArrival, curArrival, timeReq);
-            processes[toAssign].cpuBurst -= timeReq;
-            lastAssigned = toAssign;
-            curArrival += timeReq;
-            curSeat++;
-            pNo++;
+            /*
+             * Adding the selected process to the queue
+             * with appropriate slicing
+             */
+            curArrival = Math.max(toadd.arrivalTime, curArrival);
+            int cpuBurst = Math.min(timeQuantum, toadd.cpuBurst);
+            Process toAdd = new Process();
+            toAdd.pid = toadd.pid;
+            toAdd.set(curArrival, curArrival, cpuBurst);
+            queue.add(toAdd);
+            curArrival += cpuBurst;
+            curBurst += cpuBurst;
+            toadd.cpuBurst -= cpuBurst;
+            added.add(toadd.pid);
         }
+        // Restoring the original order of processes given for further use
         this.processes = copy(init);
+        // Assigning the final ready queue to class variable queue
+        this.queue = new Process[queue.size()];
+        queue.toArray(this.queue);
     }
 
     public static void main(String[] args) {
@@ -77,7 +98,7 @@ public class RR extends Scheduler {
         int timeQuantum = in.nextInt();
         System.out.print("How many processes are there ? : ");
         int numOfProcesses = in.nextInt();
-        Process givenProcesses[] = new Process[numOfProcesses];
+        Process[] givenProcesses = new Process[numOfProcesses];
         for (int i=0; i < numOfProcesses; i++) {
             int arrivalTime, cpuBurst;
             System.out.printf("Enter details of P%d : (arrivalTime, cpuBurst) = ", i+1);
@@ -94,24 +115,27 @@ public class RR extends Scheduler {
          * Printing wait times of each processes
          * And then printing avg. wait time of the algorithm
          */
+        System.out.print("Wait times : ");
         for (Process p: scheduler.processes) {
-            System.out.printf("Wait time for P%d : %d\n", p.pid, scheduler.waitTimeOf(p.pid));
+            System.out.printf("(P%d = %d), ", p.pid, scheduler.waitTimeOf(p.pid));
         }
         System.out.printf("Avg. Waiting Time : %f\n\n", scheduler.avgWaitTime());
         /*
          * Printing turnaround times of each processes
          * And then printing avg. turnaround time of the algorithm
          */
+        System.out.print("Turnaround times : ");
         for (Process p: scheduler.processes) {
-            System.out.printf("Turnaround time for P%d : %d\n", p.pid, scheduler.turnaroundTimeOf(p.pid));
+            System.out.printf("(P%d = %d), ", p.pid, scheduler.turnaroundTimeOf(p.pid));
         }
         System.out.printf("Avg. Turnaround Time : %f\n\n", scheduler.avgTurnaroundTime());
         /*
          * Printing response times of each processes
          * And then printing avg. response time of the algorithm
          */
+        System.out.print("Response times : ");
         for (Process p: scheduler.processes) {
-            System.out.printf("Response time for P%d : %d\n", p.pid, scheduler.responseTimeOf(p.pid));
+            System.out.printf("(P%d = %d), ", p.pid, scheduler.responseTimeOf(p.pid));
         }
         System.out.printf("Avg. Response Time : %f\n\n", scheduler.avgResponseTime()); // Because it is non - preemptive
         in.close();

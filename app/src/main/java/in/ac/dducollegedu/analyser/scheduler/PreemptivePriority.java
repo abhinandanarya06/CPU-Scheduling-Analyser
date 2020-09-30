@@ -8,10 +8,10 @@ public class PreemptivePriority extends Scheduler {
     protected void rearrangeQueueOnPriority() {
         /*
          * Setting priority so that it is 
-         * Sorting on basis of arrival time as first priority 
+         * Sorting on basis of arrival time as first priority
          * And external priority as second priority
          */
-        for (Process p: processes) {
+        for (Process p : processes) {
             p.priority += p.arrivalTime * 1000;
         }
         Arrays.sort(processes);
@@ -19,46 +19,72 @@ public class PreemptivePriority extends Scheduler {
          * Recovering the external priority by
          * reversing (subtracting) the process
          */
-        for (Process p: processes) {
+        int totalBurst = 0;
+        for (Process p : processes) {
             p.priority -= p.arrivalTime * 1000;
+            totalBurst += p.cpuBurst;
         }
-        ArrayList<Process> queue = new ArrayList<Process>();
-        /*
-         * Firstly filling processes in the queue upto
-         * which preemption will occur - Stage 1 ordering
-         */
-        int lastArrival = 0;
-        for (int i=0; i < processes.length; i++) {
-            Process p = processes[i];
-            int j = i+1;
-            while (j < processes.length && processes[j].priority >= p.priority) j++;
-            if (j >= processes.length) break;
-            Process ahead = processes[j];
-            Process toAdd = new Process();
-            toAdd.pid = p.pid;
-            lastArrival = Math.max(lastArrival, p.arrivalTime);
-            int cpuBurst = Math.min(p.cpuBurst, ahead.arrivalTime - lastArrival);
-            toAdd.set(lastArrival, p.priority, cpuBurst);
-            queue.add(toAdd);
-            p.cpuBurst -= cpuBurst;
-            lastArrival += cpuBurst;
-        }
-        /*
-         * Then filling processes in the queue without slicing of processes
-         * as preemption stage has been filled. Remaining stage can be sorted and
-         * added in the queue following Non-Preemptive Priority afterward.
-         */
-        Arrays.sort(processes);
-        for (Process p: processes) {
-            if (p.cpuBurst > 0) {
-                lastArrival = Math.max(lastArrival, p.arrivalTime);
-                Process toAdd = new Process();
-                toAdd.pid = p.pid;
-                toAdd.set(lastArrival, p.priority, p.cpuBurst);
-                queue.add(toAdd);
-                lastArrival += p.cpuBurst;
+        ArrayList<Process> queue = new ArrayList<>();
+
+        // stores how much time has been passed (total of all cpu
+        // burst that has been executed
+        int curBurst = 0;
+
+        // for handing arrival of current process to be added to the queue
+        int curArrival = processes[0].arrivalTime;
+
+        while (curBurst <= totalBurst) {
+            /*
+             * Selecting the process having highest priority
+             * and arrived at certain time curArrival
+             */
+            Process toadd = null;
+            int priority = (int) 1e9;
+            for (Process p : processes) {
+                if (priority > p.priority && curArrival >= p.arrivalTime && p.cpuBurst > 0) {
+                    priority = p.cpuBurst;
+                    toadd = p;
+                }
             }
+            if (toadd == null) break;
+            /*
+             * Taking the next process which can preempt
+             * the selected process
+             */
+            Process next = null;
+            for (Process p : processes) {
+                if (toadd.priority > p.priority && curArrival < p.arrivalTime) {
+                    next = p;
+                    break;
+                }
+            }
+            /*
+             * Preparing the values of the new process to
+             * be added to the queue
+             */
+            int cpuBurst;
+            int arrivalTime;
+            if (next == null) {
+                cpuBurst = toadd.cpuBurst;
+                arrivalTime = curArrival + cpuBurst;
+            } else {
+                cpuBurst = Math.min(next.arrivalTime - toadd.arrivalTime, toadd.cpuBurst);
+                arrivalTime = Math.min(curArrival + cpuBurst, next.arrivalTime);
+            }
+            /*
+             * Adding the selected process to the queue
+             * with slicing based on preemption
+             */
+            cpuBurst = Math.min(arrivalTime - curArrival, cpuBurst);
+            Process toAdd = new Process();
+            toAdd.pid = toadd.pid;
+            toAdd.set(curArrival, priority, cpuBurst);
+            queue.add(toAdd);
+            toadd.cpuBurst -= cpuBurst;
+            curArrival = arrivalTime;
+            curBurst += cpuBurst;
         }
+
         // Assigning the ArrayList type to class member (Process Array type)
         this.queue = new Process[queue.size()];
         queue.toArray(this.queue);
@@ -73,7 +99,7 @@ public class PreemptivePriority extends Scheduler {
         Scanner in = new Scanner(System.in);
         System.out.print("How many processes are there ? : ");
         int numOfProcesses = in.nextInt();
-        Process givenProcesses[] = new Process[numOfProcesses];
+        Process[] givenProcesses = new Process[numOfProcesses];
         for (int i=0; i < numOfProcesses; i++) {
             int arrivalTime, cpuBurst, priority;
             System.out.printf("Enter details of P%d : (arrivalTime, cpuBurst, priority) = ", i+1);
