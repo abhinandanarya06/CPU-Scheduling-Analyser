@@ -91,9 +91,9 @@ public class PreemptivePriority extends Scheduler {
     }
     public PreemptivePriority() {}
     public PreemptivePriority(Process[] init) {
-        this.processes = copy(init);
+        this.processes = Process.copy(init);
         rearrangeQueueOnPriority();
-        processes = copy(init);
+        processes = Process.copy(init);
     }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);

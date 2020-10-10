@@ -42,13 +42,13 @@ public class NonPreemptivePriority extends Scheduler {
     }
     public NonPreemptivePriority() {}
     public NonPreemptivePriority(Process[] init) {
-        this.queue = copy(init);
+        this.queue = Process.copy(init);
         /*
          * Cloning init to processes array
          */
 
         rearrangeQueueOnPriority();
-        this.processes = copy(init);
+        this.processes = Process.copy(init);
     }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);

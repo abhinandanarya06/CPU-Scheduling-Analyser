@@ -3,15 +3,7 @@ package in.ac.dducollegedu.analyser.scheduler;
 public class Scheduler {
     Process[] queue; // Ordered as Gantt chart
     Process[] processes;
-    public Process[] copy(Process[] p) {
-        Process[] ret = new Process[p.length];
-        for (Process process: p) {
-            ret[process.pid-1] = new Process();
-            ret[process.pid-1].pid = process.pid;
-            ret[process.pid-1].set(process.arrivalTime, process.priority, process.cpuBurst);
-        }
-        return ret;
-    }
+
     protected int waitTimeOf(int pid) {
         int waitTime = 0;
         int nastartTime = processes[pid-1].arrivalTime;

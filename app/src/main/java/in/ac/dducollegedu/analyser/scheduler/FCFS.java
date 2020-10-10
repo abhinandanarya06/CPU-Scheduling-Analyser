@@ -14,11 +14,11 @@ public class FCFS extends Scheduler {
      * then sort them on the basis of the scheduling criteria.
      */
     public FCFS(Process[] init) {
-        this.queue = copy(init);
+        this.queue = Process.copy(init);
         /**
          * Cloning init to processes array
          */
-        this.processes = copy(init);
+        this.processes = Process.copy(init);
         /**
          * Setting priority on the basis of
          * Arrival times of the processes

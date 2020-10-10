@@ -91,12 +91,12 @@ public class PreemptiveSJF extends PreemptivePriority {
     }
     public PreemptiveSJF(Process[] init) {
         super();
-        processes = copy(init);
+        processes = Process.copy(init);
         for (Process p: processes) {
             p.priority = p.cpuBurst;
         }
         rearrangeQueueOnPriority();
-        processes = copy(init);
+        processes = Process.copy(init);
     }
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);

@@ -10,7 +10,7 @@ public class RR extends Scheduler {
     int timeQuantum; // Maximum Preemption Interval
     
     public RR(int timeQuantum, Process[] init) {
-        this.processes = copy(init);
+        this.processes = Process.copy(init);
         this.timeQuantum = timeQuantum;
 
         /*
@@ -61,13 +61,15 @@ public class RR extends Scheduler {
              *      again recycle the process
              */
             if (toadd == null) {
+                int tmp = curArrival;
                 for (Process p : processes) {
                     if (p.cpuBurst > 0) {
                         curArrival = Math.max(p.arrivalTime, curArrival);
                         break;
                     }
                 }
-                added.clear();
+                if (tmp == curArrival)
+                    added.clear();
                 continue;
             }
             /*
@@ -86,7 +88,7 @@ public class RR extends Scheduler {
             added.add(toadd.pid);
         }
         // Restoring the original order of processes given for further use
-        this.processes = copy(init);
+        this.processes = Process.copy(init);
         // Assigning the final ready queue to class variable queue
         this.queue = new Process[queue.size()];
         queue.toArray(this.queue);

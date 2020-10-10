@@ -15,11 +15,11 @@ public class NonPreemptiveSJF extends NonPreemptivePriority {
      */
     public NonPreemptiveSJF(Process[] init) {
         super();
-        this.queue = copy(init);
+        this.queue = Process.copy(init);
         /*
          * Cloning init to processes array
          */
-        this.processes = copy(init);
+        this.processes = Process.copy(init);
         /*
          * Then setting priority according to
          * CPU Burst time of queue
