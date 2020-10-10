@@ -13,8 +13,8 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import in.ac.dducollegedu.analyser.databinding.ActivityMainBinding;
-import in.ac.dducollegedu.analyser.scheduler.SchedulerAnalyser;
-import in.ac.dducollegedu.analyser.scheduler.Process;
+import analyser.SchedulerAnalyser;
+import analyser.scheduler_algo.Process;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding; // Using data Binding feature
